@@ -45,16 +45,29 @@ app.get('/product/:id', (req, res)=>{
     productCollection.insertOne(product)
     .then(result => {
         console.log("data added successful")
-        res.send('successS');
+        res.redirect('/')
     })
     console.log(product);
   
     })
+app.patch('/update/:id', (req, res) => {
+  console.log(req.body.price)
+  productCollection.updateOne({_id: ObjectId(req.params.id)},
+  
+  {
+    $set: {price : req.body.price, quantity: req.body.quantity}
+  })
+  .then(result =>{
+    res.send(result.modifiedCount > 0)
+  })
+})
+
+
     // forS delete item
     app.delete('/delete/:id',(req, res) => {
       productCollection.deleteOne({_id: ObjectId(req.params.id)})
       .then(result=>{
-        console.log(result);
+        res.send(result.deletedCount > 0);
 
       })
 console.log(req.params.id);

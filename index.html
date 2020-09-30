@@ -30,7 +30,7 @@
              const p = document.createElement('p');
              p.innerHTML = `<strong> ${pd.name} </strong> -- price: ${pd.price} -- quantity: ${pd.quantity}
              <button onclick="loadProduct('${pd._id}')"> update </button>
-             <button onclick="deleteProduct('${pd._id}')"> Delete </button>
+             <button onclick="deleteProduct(event,'${pd._id}')"> Delete </button>
              `;
              container.appendChild(p);
 
@@ -51,20 +51,37 @@ function loadProduct(id){
       <br>
       quantity:  <input type="text" value="${data.quantity}" id="quantity">
       <br>
-      <button>submit</button>
+      <button onclick="updateProduct('${data._id}')">submit</button>
         `;
     })
 }
 
-
-
-     function deleteProduct(id){
+       function updateProduct(id){
+       const price = document.getElementById('price').value;
+       const quantity = document.getElementById('quantity').value;
+       const product= { id,  price,  quantity}
+       fetch(`/update/${id}`,{
+           method: 'PATCH',
+           headers: { 'Content-Type': 'application/json'},
+           body: JSON.stringify(product)
+       })
+       .then(res => res.json())
+       .then(result => {
+          if (result){
+            loadAllProduct();
+          }
+       })
+       }
+      
+     function deleteProduct(event,id){
        fetch(`/delete/${id}`,{
            method: 'DELETE'
        })
        .then(res => res.json())
        .then(result => {
-           console.log('delete successful')
+          if(result){
+              event.target.parentNode.style.display = "none";
+          }
        })
      }
     </script>
