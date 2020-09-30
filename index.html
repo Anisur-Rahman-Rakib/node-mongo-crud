@@ -26,6 +26,7 @@
         .then(products => {
          console.log(products);
          const container = document.getElementById('products');
+         container.innerHTML = '';
          products.forEach(pd =>{
              const p = document.createElement('p');
              p.innerHTML = `<strong> ${pd.name} </strong> -- price: ${pd.price} -- quantity: ${pd.quantity}
@@ -69,6 +70,7 @@ function loadProduct(id){
        .then(result => {
           if (result){
             loadAllProduct();
+            document.getElementById('update').innerHTML = '';
           }
        })
        }
